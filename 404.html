@@ -1,34 +1,122 @@
-<script>
-    (function() {
-        // Predefined title overrides for known project repositories
-        const projectTitles = {
-            'daily-games': 'Daily games',
-            'record-collection': 'Record Collection',
-            'around-the-world': 'Around the world',
-            'media-search': 'Media search',
-            'portfolio': 'Portfolio',
-            'birds': 'Birds',
-            'around-the-world-in-eighty-games': 'Around the world in eighty games',
-            'play-around-the-world': 'Play around the world',
-            'bga-tournaments': 'BGA tournament tracker'
-        };
-
-        const noticeElement = document.getElementById('context-notice');
-        
-        // Extract path segments, ignoring empty strings (e.g., "/birds/deep/link/" -> ["birds", "deep", "link"])
-        const pathSegments = window.location.pathname.split('/').filter(Boolean);
-        const repoSlug = pathSegments[0]; // The first segment after the domain is always the repository name
-
-        if (repoSlug) {
-            const slugLower = repoSlug.toLowerCase();
-            
-            // Use known title or automatically format slug (e.g. "my-cool-project" -> "My Cool Project")
-            const projectTitle = projectTitles[slugLower] || 
-                repoSlug.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-            
-            const projectUrl = `https://stopherjones.github.io/${repoSlug}/`;
-
-            noticeElement.innerHTML = `<p>It looks like you were looking for a page inside <strong>${projectTitle}</strong>. You can return to the <a href="${projectUrl}"><strong>${projectTitle} main page</strong></a> or select another project below.</p>`;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | stopherjones</title>
+    <!-- Root-relative paths ensure styles and favicon load regardless of subfolder path -->
+    <link rel="icon" href="/favicon.jpg" type="image/jpg">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .notice-card {
+            grid-column: 1 / -1;
+            background-color: #f8f9fa;
+            border-left: 4px solid #0066cc;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
         }
-    })();
-</script>
+        .notice-card strong {
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>404 - Page Not Found</h1>
+    </header>
+
+    <main class="grid">
+        <!-- Dynamic contextual banner updated via JS -->
+        <div id="context-notice" class="notice-card">
+            <p>The requested page could not be found. Select a project below or return to <a href="https://stopherjones.github.io/">Home</a>.</p>
+        </div>
+
+        <a href="https://stopherjones.github.io/" class="card">
+            <h3>Main Homepage</h3>
+            <p>Return to the primary site index.</p>
+        </a>
+
+        <a href="https://stopherjones.github.io/daily-games/" class="card">
+            <h3>Daily games</h3>
+            <p>Daily games and puzzles.</p>
+        </a>
+        
+        <a href="https://stopherjones.github.io/record-collection/" class="card">
+            <h3>Record Collection</h3>
+            <p>My virtual record collection.</p>
+        </a>
+             
+        <a href="https://stopherjones.github.io/around-the-world/" class="card">
+            <h3>Around the world</h3>
+            <p>Exploring the world through books and music.</p>
+        </a>
+        
+        <a href="https://stopherjones.github.io/media-search/" class="card">
+            <h3>Media search</h3>
+            <p>Aggregated audiobook and world music search</p>
+        </a>
+
+        <a href="https://stopherjones.github.io/portfolio/" class="card">
+            <h3>Portfolio</h3>
+            <p>My photos and drawings.</p>
+        </a>
+        
+        <a href="https://stopherjones.github.io/birds/" class="card">
+            <h3>Birds</h3>
+            <p>Photographing the birds of the UK.</p>
+        </a>
+
+        <a href="https://stopherjones.github.io/around-the-world-in-eighty-games/" class="card">
+            <h3>Around the world in eighty games</h3>
+            <p>A project to play 80 games around the world on Board Game Arena.</p>
+        </a>
+
+        <a href="https://stopherjones.github.io/play-around-the-world/" class="card">
+            <h3>Play around the world</h3>
+            <p>Explore the world on BGA.</p>
+        </a>
+        
+        <a href="https://stopherjones.github.io/BGA-tournaments/" class="card">
+            <h3>BGA tournament tracker</h3>
+            <p>Keep on top of TBA tournaments on BGA.</p>
+        </a>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Known titles mapping for exact display naming
+            const projectTitles = {
+                'daily-games': 'Daily games',
+                'record-collection': 'Record Collection',
+                'around-the-world': 'Around the world',
+                'media-search': 'Media search',
+                'portfolio': 'Portfolio',
+                'birds': 'Birds',
+                'around-the-world-in-eighty-games': 'Around the world in eighty games',
+                'play-around-the-world': 'Play around the world',
+                'bga-tournaments': 'BGA tournament tracker'
+            };
+
+            const noticeElement = document.getElementById('context-notice');
+            if (!noticeElement) return;
+
+            // Extract path segments (e.g., "/birds/links" -> ["birds", "links"])
+            const pathSegments = window.location.pathname.split('/').filter(Boolean);
+            const repoSlug = pathSegments[0]; // The repository name is always the first path segment
+
+            if (repoSlug) {
+                const slugLower = repoSlug.toLowerCase();
+                
+                // Retrieve exact title or format slug dynamically (e.g. "my-project" -> "My Project")
+                const projectTitle = projectTitles[slugLower] || 
+                    repoSlug.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+                
+                const projectUrl = `https://stopherjones.github.io/${repoSlug}/`;
+
+                noticeElement.innerHTML = `<p>It looks like you were looking for a page inside <strong>${projectTitle}</strong>. You can return to the <a href="${projectUrl}"><strong>${projectTitle} main page</strong></a> or select another project below.</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
