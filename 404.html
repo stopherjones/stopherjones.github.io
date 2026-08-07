@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Not Found | stopherjones</title>
-    <!-- Root-relative paths ensure styles and favicon load regardless of subfolder path -->
     <link rel="icon" href="/favicon.jpg" type="image/jpg">
     <link rel="stylesheet" href="/style.css">
     <style>
@@ -27,9 +26,8 @@
     </header>
 
     <main class="grid">
-        <!-- Dynamic contextual banner updated via JS -->
         <div id="context-notice" class="notice-card">
-            <p>The requested page could not be found. Select a project below or return to <a href="https://stopherjones.github.io/">Home</a>.</p>
+            <p>That link doesn't exist. Select a project below or return to <a href="https://stopherjones.github.io/">Home</a>.</p>
         </div>
 
         <a href="https://stopherjones.github.io/" class="card">
@@ -85,36 +83,31 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Known titles mapping for exact display naming
-            const projectTitles = {
-                'daily-games': 'Daily games',
-                'record-collection': 'Record Collection',
-                'around-the-world': 'Around the world',
-                'media-search': 'Media search',
-                'portfolio': 'Portfolio',
-                'birds': 'Birds',
-                'around-the-world-in-eighty-games': 'Around the world in eighty games',
-                'play-around-the-world': 'Play around the world',
-                'bga-tournaments': 'BGA tournament tracker'
+            // Whitelist of valid project repositories
+            const knownProjects = {
+                'daily-games': { name: 'Daily games', url: 'https://stopherjones.github.io/daily-games/' },
+                'record-collection': { name: 'Record Collection', url: 'https://stopherjones.github.io/record-collection/' },
+                'around-the-world': { name: 'Around the world', url: 'https://stopherjones.github.io/around-the-world/' },
+                'media-search': { name: 'Media search', url: 'https://stopherjones.github.io/media-search/' },
+                'portfolio': { name: 'Portfolio', url: 'https://stopherjones.github.io/portfolio/' },
+                'birds': { name: 'Birds', url: 'https://stopherjones.github.io/birds/' },
+                'around-the-world-in-eighty-games': { name: 'Around the world in eighty games', url: 'https://stopherjones.github.io/around-the-world-in-eighty-games/' },
+                'play-around-the-world': { name: 'Play around the world', url: 'https://stopherjones.github.io/play-around-the-world/' },
+                'bga-tournaments': { name: 'BGA tournament tracker', url: 'https://stopherjones.github.io/BGA-tournaments/' }
             };
 
             const noticeElement = document.getElementById('context-notice');
             if (!noticeElement) return;
 
-            // Extract path segments (e.g., "/birds/links" -> ["birds", "links"])
             const pathSegments = window.location.pathname.split('/').filter(Boolean);
-            const repoSlug = pathSegments[0]; // The repository name is always the first path segment
+            const firstSegment = pathSegments[0] ? pathSegments[0].toLowerCase() : '';
 
-            if (repoSlug) {
-                const slugLower = repoSlug.toLowerCase();
-                
-                // Retrieve exact title or format slug dynamically (e.g. "my-project" -> "My Project")
-                const projectTitle = projectTitles[slugLower] || 
-                    repoSlug.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                
-                const projectUrl = `https://stopherjones.github.io/${repoSlug}/`;
-
-                noticeElement.innerHTML = `<p>It looks like you were looking for a page inside <strong>${projectTitle}</strong>. You can return to the <a href="${projectUrl}"><strong>${projectTitle} main page</strong></a> or select another project below.</p>`;
+            // Only show project-specific message if the URL path starts with a valid project repo
+            if (firstSegment && knownProjects[firstSegment]) {
+                const project = knownProjects[firstSegment];
+                noticeElement.innerHTML = `<p>It looks like you were looking for a page inside <strong>${project.name}</strong>. You can return to the <a href="${project.url}"><strong>${project.name} main page</strong></a> or select another project below.</p>`;
+            } else {
+                noticeElement.innerHTML = `<p>That link doesn't exist. Select a project below or return to <a href="https://stopherjones.github.io/">Home</a>.</p>`;
             }
         });
     </script>
